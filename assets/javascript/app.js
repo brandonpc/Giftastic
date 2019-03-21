@@ -63,8 +63,9 @@ $(document).on('click', '.gif-buttons', function () {
     });
 });
 
-$(document).on('click', '.Image', function () {
-    var gifState = $(this).data('state');
+$(document).on('click', '.clickable-gif', function () {
+    // console.log($(this).data('state'));
+    var gifState = $(this).attr('data-state');
     if (gifState === 'still') {
         $(this).attr('src', $(this).data('animated'));
         $(this).attr('data-state', 'animated');
