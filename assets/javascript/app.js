@@ -16,6 +16,7 @@ function makeButtons() {
         a.addClass("gif-buttons");
         // Adding a data-attribute
         a.attr("data-name", topics[i]);
+
         // Providing the initial button text
         a.text(topics[i]);
         // Append
@@ -26,19 +27,25 @@ function makeButtons() {
     console.log(a);
 }
 
-$(document).on('click', '.searchButton', function () {
-    var dataType = $(this).data('type');
+// on-click event for buttons
+$(document).on('click', '.gif-buttons', function () {
+    console.log("Click!");
+    console.log($(this).data('name'));
+    // "data type" is undefined. 
+    var dataType = $(this).data('name');
+
     var bcApiKey = "Q4S0rOrLTGQHSEql1EOhvcM6Fi2S5UQi";
-    var queryURL = `https://api.giphy.com/v1/gifs/search?q=${dataType}api_key=${bcApiKey}&limit=10`;
+    var queryURL = `https://api.giphy.com/v1/gifs/search?q=${dataType}&api_key=${bcApiKey}&limit=10`;
     $.ajax({
         url: queryURL,
         method: "GET"
     }).then(function (response) {
         console.log(response);
         for (var i = 0; i < topics.length; i++) {
-            var gifresponseDiv = response.data[i].rating;
+            // gifresponseDiv not a div (how to create a div)
+            var gifresponseDiv = $("<div>");
             var rating = response.data[i].rating;
-            var ratingText = $('<p>').text("Rating: " + ratingText);
+            var ratingText = $('<p>').text("Rating: " + rating);
 
             var animated = response.data[i].images.fixed_height.url;
             var still = response.data[i].images.fixed_height_still.url;
@@ -48,7 +55,9 @@ $(document).on('click', '.searchButton', function () {
             gifImage.attr("data-still", still);
             gifImage.attr("data-animated", animated);
             gifImage.attr("data-state", "still");
-            $("#new-gifs").append(searchDiv);
+            gifresponseDiv.append(ratingText);
+            gifresponseDiv.append(gifImage);
+            $("#new-gifs").append(gifresponseDiv);
         }
 
     });
@@ -65,10 +74,12 @@ $(document).on('click', '.Image', function () {
     }
 });
 
+
+
+
+
+
 // $(document).on("click", ".gif-button", displayTopicInfo);
-
-// makeButtons();
-
 // 
 
 // on click(button): 10 static, not animated images from giphy API
